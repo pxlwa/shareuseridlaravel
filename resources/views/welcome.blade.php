@@ -139,6 +139,10 @@
         <div id="app">
   <share-id></share-id>
 </div>
+<div id="app">
+    <login></login>
+</div>
+
 
     </body>
 </html>
