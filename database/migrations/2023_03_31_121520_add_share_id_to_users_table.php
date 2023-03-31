@@ -14,6 +14,13 @@ return new class extends Migration
     Schema::table('users', function (Blueprint $table) {
         $table->string('share_id')->unique()->nullable();
     });
+    Schema::create('share_id_users', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('user_id');
+        $table->string('share_id')->unique();
+        $table->timestamps();
+    });
+    
 }
 
 public function down()
@@ -49,5 +56,32 @@ public function scopeByShareId($query, $share_id)
 {
     return $query->where('share_id', $share_id);
 }
+public function shareIds()
+{
+    return $this->hasMany(ShareIdUser::class);
+}
+
+public static function generateShareId()
+{
+    do {
+        $shareId = Str::random(10);
+    } while (self::where('share_id', $shareId)->exists());
+
+    return $shareId;
+}
+
+public function createShareId()
+{
+    $user = auth()->user();
+
+    $shareId = ShareIdUser::generateShareId();
+
+    $user->shareIds()->create([
+        'share_id' => $shareId,
+    ]);
+
+    return $shareId;
+}
+
 
 };
