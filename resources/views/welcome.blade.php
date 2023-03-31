@@ -136,5 +136,9 @@
                 </div>
             </div>
         </div>
+        <div id="app">
+  <share-id></share-id>
+</div>
+
     </body>
 </html>
